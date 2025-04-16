@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 class ProductoController extends Controller
 {
+    // Permite visualizar los productos en a vista principal
     public function index()
     {
         $productos = Producto::orderBy('id')->paginate(5);
