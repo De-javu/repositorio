@@ -11,10 +11,26 @@ class rolloController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    
+    public function index(Request $request)
     {
-        $consulta = Rollo::orderBy('id')->paginate(5);
-        return view('rollos.index', compact('consulta'));
+        $buscar = $request->input('buscar');
+    
+        $consulta = Rollo::query()
+            ->when($buscar, function ($query, $buscar) {
+                $query->where('nombre', 'like', "%{$buscar}%")
+                      ->orWhere('apellido', 'like', "%{$buscar}%")
+                      ->orWhere('prontuario', 'like', "%{$buscar}%")
+                      ->orWhere('identificacion', 'like', "%{$buscar}%");
+            })
+            
+            ->orderBy('id')
+            ->paginate(5);
+
+        // Verificar si hay resultados
+       $encontrado = $consulta->count() > 0;
+    
+        return view('rollos.index', compact('consulta', 'buscar', 'encontrado'));
     }
 
     /**
