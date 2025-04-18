@@ -40,11 +40,19 @@ return [
 
         'public' => [
             'driver' => 'local',
-            'root' => storage_path('app/public'),
+            'root' => storage_path('app/rollos'),
             'url' => env('APP_URL').'/storage',
             'visibility' => 'public',
             'throw' => false,
             'report' => false,
+        ],
+
+    
+        'rollos' => [
+            'driver' => 'local',
+            'root' => storage_path('app/public/rollos'),
+            'url' => env('APP_URL') . '/storage/rollos',
+            'visibility' => 'public',
         ],
 
         's3' => [

@@ -30,8 +30,28 @@ class rolloController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        {
+            $request->validate([
+                'nombre' => 'required',
+                'descripcion' => 'required',
+                'archivo' => 'required|file', // Validar que se suba un archivo
+            ]);
+        
+            // Guardar el archivo en el disco 'rollos'
+            $archivo = $request->file('archivo');
+            $nombreArchivo = $archivo->getClientOriginalName();
+            $archivo->storeAs('', $nombreArchivo, 'rollos');
+        
+            // Crear el registro en la base de datos
+            Rollo::create([
+                'nombre' => $request->nombre,
+                'descripcion' => $request->descripcion,
+                'archivo' => $nombreArchivo, // Guardar el nombre del archivo en la base de datos
+            ]);
+        
+            return redirect()->route('rollos.index')->with('success', 'Archivo subido correctamente.');
     }
+}
 
     /**
      * Display the specified resource.
