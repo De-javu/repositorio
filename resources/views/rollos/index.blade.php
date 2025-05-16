@@ -68,18 +68,18 @@
                             <td class="py-3 px-6">{{ $rollo->apellido }}</td>
                             <td class="py-3 px-6">{{ $rollo->identificacion }}</td>
                         {{-- <td class="py-3 px-6">{{ $rollo->nombrearchivo }}</td> --}}
+                          
+
                             <td class="py-3 px-6">
-                                   @if (Str::endsWith($rollo->nombrearchivo, '.pdf'))
-                                        <!-- Enlace para archivos PDF -->
-                                        <a href="{{ Storage::url('rollos/' . $rollo->nombrearchivo) }}" target="_blank" class="text-blue-500 hover:underline">
-                                            {{ __('Ver PDF') }}
-                                        </a>
-                                    @else
-                                        <!-- Mostrar imagen si no es un PDF -->
-                                        <img src="{{ Storage::url('rollos/' . $rollo->nombrearchivo) }}" alt="Imagen" class="w-20 h-20 object-cover rounded-full">
-                                    @endif
-                                </td>
-                           
+                                @if (Str::endsWith($rollo->nombrearchivo, '.pdf'))
+                                    <a href="{{ Storage::disk('s3')->temporaryUrl('rollos/' . $rollo->nombrearchivo, now()->addMinutes(10)) }}" target="_blank" class="text-blue-500 hover:underline">
+                                        {{ __('Ver PDF') }}
+                                    </a>
+                                @else
+                                    <img src="{{ Storage::disk('s3')->temporaryUrl('rollos/' . $rollo->nombrearchivo, now()->addMinutes(10)) }}" alt="Imagen" class="w-20 h-20 object-cover rounded-full">
+                                @endif
+                            </td>
+                            
                         </tr>
                     @endforeach
                 </tbody>
